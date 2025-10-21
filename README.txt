@@ -1,5 +1,7 @@
 PROJETO NBA ANALYST
 
+TESTE DIEGAO
+
 Criei esse projeto afim de aprimorar meus conhecimentos técnicos em Data Science junto a minha paixão com a NBA.
 Para primeira versão, meu objetivo é praticar meus aprendizados e entender mais sobre a base de dados que possuo.
 
