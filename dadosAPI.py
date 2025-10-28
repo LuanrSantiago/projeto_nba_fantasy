@@ -103,12 +103,48 @@ def transformar_dados(df: pd.DataFrame) -> pd.DataFrame:
     print("Nomes dos jogadores limpos, sem acentos e em CAIXA ALTA ('PlayerName_Limpo').")
     return df
 
+def carregar_regras_fantasy(db_file: str, regras: dict):
+    """Cria ou substitui a tabela de regras do Fantasy no SQLite."""
+    df_regras = pd.DataFrame(list(regras.items()), columns=['Estatistica', 'Pontos'])
+    
+    try:
+        conn = sqlite3.connect(db_file)
+        df_regras.to_sql(
+            'regras_fantasy', 
+            conn, 
+            if_exists='replace', # Substitui a tabela se já existir
+            index=False 
+        )
+        print(f"Sucesso! Tabela 'regras_fantasy' carregada com {len(df_regras)} regras.")
+    except Exception as e:
+        print(f"Erro ao carregar regras para o SQLite: {e}")
+    finally:
+        if 'conn' in locals() and conn:
+            conn.close()
 
+
+#%%
 # --- Pipeline E+L para as Últimas 5 Temporadas ---
 if __name__ == '__main__':
     
     NOME_DO_BANCO = 'nba_analytics_rest.db'
     NOME_DA_TABELA = 'player_totals_5_seasons'
+
+    REGRAS_ESPN = {
+    'twoFg': 2.0, 
+    'twoAttemps': -1.0,  
+    'ft': 1.0,  
+    'ftAttemps': -1.0,  
+    'threeFg': 1.0,   
+    'totalRb': -1.0,
+    'assists': 2.0, 
+    'steals': 4.0,
+    'blocks': 4.0,
+    'turnovers': -2.0,
+    'points': 1.0
+    }
+
+    carregar_regras_fantasy(NOME_DO_BANCO, REGRAS_ESPN)
     
     # Define as últimas 5 temporadas. (Ajuste conforme o ano atual)
     ano_atual = datetime.now().year
