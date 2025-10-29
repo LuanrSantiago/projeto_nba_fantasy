@@ -128,7 +128,7 @@ def carregar_regras_fantasy(db_file: str, regras: dict):
 if __name__ == '__main__':
     
     NOME_DO_BANCO = 'nba_analytics_rest.db'
-    NOME_DA_TABELA = 'player_totals_5_seasons'
+    NOME_DA_TABELA = 'player_totals_seasons'
 
     REGRAS_ESPN = {
     'twoFg': 2.0, 

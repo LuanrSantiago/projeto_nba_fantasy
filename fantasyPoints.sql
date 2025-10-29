@@ -16,7 +16,7 @@ WITH dataPlayersFantasy AS (
         twoPercent,
         threePercent,
         fieldPercent
-    FROM player_totals_5_seasons
+    FROM player_totals_seasons
 ), 
 
 tableFantasyPoints AS (
@@ -42,21 +42,20 @@ tableFantasyPoints AS (
         ) AS fantasyScore
         
     FROM 
-        player_totals_5_seasons t1
+        player_totals_seasons t1
 
     ORDER BY
         t1.Temporada ASC, t1.PlayerName_Limpo ASC
 )
 
 SELECT
-    t2.fantasyScore,
-    d.*
+    d.*,
+    t2.fantasyScore    
 FROM dataPlayersFantasy AS d
 LEFT JOIN tableFantasyPoints AS t2
 ON d.playerId = t2.playerId AND d.Temporada = t2.Temporada
-WHERE d.name = "LUKA DONCIC"
 GROUP BY
     d.playerId,
     d.Temporada,
     d.name
-
+ORDER BY d.name ASC, d.Temporada ASC
