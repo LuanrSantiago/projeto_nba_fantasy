@@ -50,7 +50,7 @@ tableFantasyPoints AS (
 
 SELECT
     d.*,
-    t2.fantasyScore    
+    t2.fantasyScore  
 FROM dataPlayersFantasy AS d
 LEFT JOIN tableFantasyPoints AS t2
 ON d.playerId = t2.playerId AND d.Temporada = t2.Temporada
