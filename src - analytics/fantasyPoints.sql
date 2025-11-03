@@ -69,7 +69,14 @@ SELECT
     ROUND(t2.fantasyScore / d.games,2) AS fantasyPointsGame,
     ROUND(t2.fantasyScore / d.minutesPg,2) AS fantasyPointsMinute,
     IFNULL(ROUND(t2.fantasyScore / d.gamesStarted,2),0) AS fantasyPointsStarted,
-    ROUND((t2.fantasyScore / t3.fpTeam),2) AS percentPointFantasyTeam
+    ROUND((t2.fantasyScore / t3.fpTeam),2) AS percentPointFantasyTeam,
+    CASE 
+        WHEN d.minutesPg > 0 THEN ROUND((t2.fantasyScore / d.minutesPg) * 36, 2) ELSE 0 
+    END AS fantasyPointsPer36,
+    CASE
+        WHEN d.assists > 0 THEN ROUND(d.points * 1.0 / d.assists, 2)
+        ELSE 0 
+    END AS pointsAssistRatio
 FROM dataPlayersFantasy AS d
 LEFT JOIN tableFantasyPoints AS t2
 ON d.playerId = t2.playerId AND d.Temporada = t2.Temporada
