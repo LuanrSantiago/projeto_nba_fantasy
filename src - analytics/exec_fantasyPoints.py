@@ -19,6 +19,7 @@ engine_analytical = sqlalchemy.create_engine("sqlite:///../data/analytics/nba_an
 # %%
 
 df = pd.read_sql(query, engine_app)
-df.to_sql("fantasyPoints", engine_analytical, index=False, if_exists="append")
+df.to_sql("fantasyPoints", engine_analytical, index=False, if_exists="replace")
 
+print("Dados carregados com sucesso! Tabela 'fantasyPoints' atualizada.")
 # %%

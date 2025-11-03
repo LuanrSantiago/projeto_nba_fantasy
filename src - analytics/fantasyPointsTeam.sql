@@ -1,30 +1,4 @@
-WITH dataPlayersFantasy AS (    
-    SELECT 
-        playerId,
-        PlayerName_Limpo AS name,
-        position,
-        Temporada,
-        games,
-        gamesStarted,
-        minutesPg,
-        points,
-        assists,
-        totalRb as rebounds,
-        steals,
-        blocks,
-        turnovers,
-        personalFouls,
-        ftPercent,
-        twoPercent,
-        threePercent,
-        fieldPercent,
-        age,
-        team
-
-    FROM player_totals_seasons
-), 
-
-tableFantasyPoints AS (
+WITH tableFantasyPoints AS (
     SELECT
         t1.playerId,
         t1.Temporada,
@@ -44,8 +18,7 @@ tableFantasyPoints AS (
             IFNULL(t1.blocks * (SELECT Pontos FROM regras_fantasy WHERE Estatistica = 'blocks') ,0)+
             IFNULL(t1.turnovers * (SELECT Pontos FROM regras_fantasy WHERE Estatistica = 'turnovers') ,0)+
             IFNULL(t1.points * (SELECT Pontos FROM regras_fantasy WHERE Estatistica = 'points'), 0)
-        ) AS fantasyScore,
-        t1.team
+        ) AS fantasyScore
         
     FROM 
         player_totals_seasons t1
@@ -54,29 +27,16 @@ tableFantasyPoints AS (
         t1.Temporada ASC, t1.PlayerName_Limpo ASC
 ),
 
-tableFantasyPointsTeam AS (
-    SELECT 
-        team,
-        Temporada,
-        SUM(fantasyScore) AS fpTeam 
-    FROM tableFantasyPoints 
-    GROUP BY team, Temporada
-)
+SELECT * FROM tableFantasyPoints LIMIT 10
 
-SELECT
-    d.*,
-    t2.fantasyScore,
-    ROUND(t2.fantasyScore / d.games,2) AS fantasyPointsGame,
-    ROUND(t2.fantasyScore / d.minutesPg,2) AS fantasyPointsMinute,
-    IFNULL(ROUND(t2.fantasyScore / d.gamesStarted,2),0) AS fantasyPointsStarted,
-    ROUND((t2.fantasyScore / t3.fpTeam),2) AS percentPointFantasyTeam
-FROM dataPlayersFantasy AS d
-LEFT JOIN tableFantasyPoints AS t2
-ON d.playerId = t2.playerId AND d.Temporada = t2.Temporada
-LEFT JOIN tableFantasyPointsTeam as t3
-ON d.team = t3.team
-GROUP BY
-    d.playerId,
-    d.Temporada,
-    d.name
-ORDER BY d.name ASC, d.Temporada ASC
+-- tableFantasyPointsTeam AS (
+--     SELECT 
+--         t1.team,
+--         t1.Temporada,
+--         SUM(t2.fantasyScore) AS fpTeam
+--     FROM player_totals_seasons AS t1
+--     LEFT JOIN tableFantasyPoints AS t2
+--     ON t1.team = t2.team
+--     GROUP BY t1.team, t2.Temporada
+-- )
+
