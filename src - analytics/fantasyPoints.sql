@@ -15,7 +15,9 @@ WITH dataPlayersFantasy AS (
         ftPercent,
         twoPercent,
         threePercent,
-        fieldPercent
+        fieldPercent,
+        age,
+        team
     FROM player_totals_seasons
 ), 
 
@@ -50,7 +52,9 @@ tableFantasyPoints AS (
 
 SELECT
     d.*,
-    t2.fantasyScore  
+    t2.fantasyScore,
+    ROUND(t2.fantasyScore / d.games,2) AS fpg
+    
 FROM dataPlayersFantasy AS d
 LEFT JOIN tableFantasyPoints AS t2
 ON d.playerId = t2.playerId AND d.Temporada = t2.Temporada

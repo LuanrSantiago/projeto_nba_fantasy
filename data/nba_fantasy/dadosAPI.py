@@ -136,7 +136,7 @@ if __name__ == '__main__':
     'ft': 1.0,  
     'ftAttemps': -1.0,  
     'threeFg': 1.0,   
-    'totalRb': -1.0,
+    'totalRb': 1.0,
     'assists': 2.0, 
     'steals': 4.0,
     'blocks': 4.0,
