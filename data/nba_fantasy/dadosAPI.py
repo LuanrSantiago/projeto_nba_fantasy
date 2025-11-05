@@ -155,7 +155,7 @@ if __name__ == '__main__':
     # Ex: As 5 temporadas mais recentes (assumindo a temporada 2023-2024 é a mais atual)
     # Se for Outubro/2025, o ano final completo pode ser 2024 (2024-2025).
     # Vamos usar as 5 temporadas anteriores ao ano atual:
-    ultimas_5_temporadas = range(ano_atual - 5, ano_atual) 
+    ultimas_10_temporadas = range(ano_atual - 10, ano_atual) 
     # Ex: Se ano_atual é 2025, vai de 2020 a 2024.
 
     # Lista para armazenar todos os DataFrames (opcional, mas bom para debug)
@@ -165,7 +165,7 @@ if __name__ == '__main__':
     # A tabela será recriada na primeira temporada e 'appended' nas seguintes
     if_exists_mode = 'replace'
     
-    for temporada in ultimas_5_temporadas:
+    for temporada in ultimas_10_temporadas:
             print("-" * 50)
             
             # 1. Extração (E)
@@ -192,7 +192,7 @@ if __name__ == '__main__':
                 print(f"Pulando a temporada {temporada} devido à falha na extração.")
 
     print("\n" + "=" * 50)
-    print("Pipeline E+T+L de 5 temporadas concluído.")
+    print(f"Pipeline E+T+L das temporadas a partir de {ultimas_10_temporadas}.")
         
     # Opcional: Combinar todos os dados em um DataFrame final na memória
     if todos_dfs_limpos:
