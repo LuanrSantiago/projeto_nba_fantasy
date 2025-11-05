@@ -1,4 +1,4 @@
-WITH tb_join AS (
+WITH tb_target AS (
     SELECT 
         t1.Temporada,
         t1.playerId,
@@ -13,7 +13,14 @@ WITH tb_join AS (
     ON t1.playerId = t2.playerId AND t1.Temporada + 1 = t2.Temporada
 )
 
-SELECT * 
-FROM tb_join
+SELECT 
+    t1.*,
+    t2.nextFantasyScore,
+    t2.scoreChange,
+    t2.flagFsGrow
+FROM ft_join AS t1
+LEFT JOIN tb_target AS t2
+ON t1.playerId = t2.playerId AND t1.Temporada= t2.Temporada
+
 --WHERE RandomCol <= 2
 ORDER BY playerId, Temporada
