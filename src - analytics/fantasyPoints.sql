@@ -4,6 +4,8 @@ WITH dataPlayersFantasy AS (
         PlayerName_Limpo AS name,
         position,
         Temporada,
+        team,
+        age,
         games,
         gamesStarted,
         minutesPg,
@@ -17,9 +19,7 @@ WITH dataPlayersFantasy AS (
         ftPercent,
         twoPercent,
         threePercent,
-        fieldPercent,
-        age,
-        team
+        fieldPercent
 
     FROM player_totals_seasons
 ), 
@@ -55,7 +55,26 @@ tableFantasyPoints AS (
 )
 
 SELECT
-    d.*,
+    d.playerId,
+    d.name,
+    d.position,
+    d.Temporada,
+    d.team,
+    d.age,
+    d.games,
+    d.gamesStarted,
+    d.minutesPg,
+    d.points,
+    d.assists,
+    d.rebounds,
+    d.steals,
+    d.blocks,
+    d.turnovers,
+    d.personalFouls,
+    d.ftPercent,
+    d.twoPercent,
+    d.threePercent,
+    d.fieldPercent,
     t2.fantasyScore
 FROM dataPlayersFantasy AS d
 LEFT JOIN tableFantasyPoints AS t2
