@@ -9,10 +9,9 @@ from unidecode import unidecode
 # %%
 
 # --- 1. CONFIGURAÇÃO DA NOVA API (rest.nbaapi.com) ---
-# A nova API não usa RapidAPI Key. Ela usa uma estrutura de URL mais direta.
 BASE_URL = "http://rest.nbaapi.com/api/PlayerDataTotals/season/"
 
-# A API rest.nbaapi.com não precisa de headers de autenticação como a RapidAPI.
+# A API rest.nbaapi.com não precisa de headers de autenticação
 # O método GET que usaremos é: /api/PlayerDataTotals/season/{season}
 
 # --- 2. FUNÇÃO DE EXTRAÇÃO (E) para rest.nbaapi.com ---
@@ -26,7 +25,6 @@ def extrair_estatisticas_jogadores_nova_api(temporada: int, base_url: str):
     print(f"Fazendo requisição para: {url_completa}...")
     
     try:
-        # Não precisa de 'headers' ou 'params' como a RapidAPI
         response = requests.get(url_completa)
         response.raise_for_status() 
 
@@ -53,7 +51,6 @@ def extrair_estatisticas_jogadores_nova_api(temporada: int, base_url: str):
 
 
 # --- 3. FUNÇÃO DE CARGA (L) ---
-# Esta função permanece a mesma.
 def carregar_para_sqlite(df: pd.DataFrame, db_file: str, nome_tabela: str, if_exists: str = 'append'):
     """Carrega o DataFrame para uma tabela SQLite."""
     print(f"Iniciando conexão com o banco de dados: {db_file}")
@@ -152,9 +149,9 @@ if __name__ == '__main__':
     # A API rest.nbaapi.com usa o formato '2023-24' para a temporada. Vamos usar o ano de início.
     # Ex: 2023 = 2023-2024
     
-    # Ex: As 5 temporadas mais recentes (assumindo a temporada 2023-2024 é a mais atual)
+    # Ex: As temporadas mais recentes (assumindo a temporada 2023-2024 é a mais atual)
     # Se for Outubro/2025, o ano final completo pode ser 2024 (2024-2025).
-    # Vamos usar as 5 temporadas anteriores ao ano atual:
+    # Vamos usar as temporadas anteriores ao ano atual:
     ultimas_10_temporadas = range(ano_atual - 10, ano_atual) 
     # Ex: Se ano_atual é 2025, vai de 2020 a 2024.
 
@@ -182,7 +179,7 @@ if __name__ == '__main__':
                 
                 # 3. Carga (L)
                 carregar_para_sqlite(
-                    df=df_dados_limpos, # <--- Carregando o DF LIMPO
+                    df=df_dados_limpos,
                     db_file=NOME_DO_BANCO, 
                     nome_tabela=NOME_DA_TABELA,
                     if_exists=if_exists_mode 
@@ -194,7 +191,6 @@ if __name__ == '__main__':
     print("\n" + "=" * 50)
     print(f"Pipeline E+T+L das temporadas a partir de {ultimas_10_temporadas}.")
         
-    # Opcional: Combinar todos os dados em um DataFrame final na memória
     if todos_dfs_limpos:
         df_final_memoria = pd.concat(todos_dfs_limpos, ignore_index=True)
         print(f"Total de linhas salvas no DB: {len(df_final_memoria)}")
