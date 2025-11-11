@@ -2,7 +2,7 @@
 
 import pandas as pd
 import sqlalchemy
-from sklearn import model_selection
+from sklearn import model_selection, tree, metrics, pipeline
 from feature_engine import selection, imputation, encoding
 
 con = sqlalchemy.create_engine("sqlite:///../data/analytics/nba_analytics.db")
@@ -23,11 +23,12 @@ df_oot
 
 # %%
 
-# SAMPLE - Teste e Treino
+# SAMPLE - TESTE E TREINO
 
 target = 'flagFsGrow'
-features_to_exclude = ['flagFsGrow', 'nextFantasyScore', 'scoreChange']
+features_to_exclude = ['flagFsGrow', 'nextFantasyScore', 'scoreChange', 'playerId', 'name', 'Temporada', 'team', 'position']
 features = [col for col in df.columns if col not in features_to_exclude]
+#features = df.columns.tolist()[5:]
 
 df_train_test = df[df['Temporada']<df['Temporada'].max()].reset_index(drop=True)
 
@@ -56,9 +57,10 @@ s_nas
 
 # %%
 
+# EXPLORE - BIVARIADA
+
 cat_features = X_train.dtypes[X_train.dtypes == 'object'].index.tolist()
 num_features = list(set(features) - set(cat_features))
-num_features
 
 df_train = X_train.copy()
 df_train[target] = y_train.copy()
@@ -70,19 +72,16 @@ bivariada.sort_values(by='ratio', ascending=False)
 
 bivariada_cat = df_train.groupby('groupPerformance')[target].mean()
 
-
 # %%
 
 # MODIFY - DROP
 
-to_remove = bivariada[bivariada['ratio']==1].index.tolist()
-
-if len(to_remove) > 0:
-    drop_features = selection.DropFeatures(to_remove)
-    X_train_transform = drop_features.fit_transform(X_train)
-else:
-    X_train_transform = X_train.copy()
-
+# to_remove = bivariada[bivariada['ratio']==1].index.tolist()
+# if len(to_remove) > 0:
+#     drop_feat = selection.DropFeatures(to_remove)
+#     X_train_transform = drop_feat.fit_transform(X_train)
+# else:
+#     X_train_transform = X_train.copy()
 
 
 # %%
@@ -95,38 +94,38 @@ imput_0 = imputation.ArbitraryNumberImputer(arbitrary_number=0,variables=fill_0)
 fill_9999 = ['careerPeak','deltaCareerPeak']
 imput_9999 = imputation.ArbitraryNumberImputer(arbitrary_number=-9999, variables=fill_9999)
 
-
 # %%
 
 # MODIFY - ONEHOT
 
 onehot = encoding.OneHotEncoder(variables=['groupPerformance'])
 
-#%%
-
-# MODIFY - APLICANDO TRANSFORMAÇÕES NO DATASET
-
-X_train_transform = imput_0.fit_transform(X_train_transform)
-X_train_transform = imput_9999.fit_transform(X_train_transform)
-X_train_transform = onehot.fit_transform(X_train_transform)
-X_train_transform
-
 # %%
 
 # MODEL
 
-from sklearn import tree, metrics, ensemble
-
 model = tree.DecisionTreeClassifier(random_state=42, min_samples_leaf=50)
-model.fit(X_train_transform, y_train)
 
 
 # %%
 
-# ASSESS
+# CRIANDO PIPELINE
 
-y_pred_train = model.predict(X_train_transform)
-y_proba_train = model.predict_proba(X_train_transform)
+model_pipeline = pipeline.Pipeline(steps=[
+    ('Imputação de Zeros', imput_0),
+    ('Imputação de -9999', imput_9999),
+    ('OneHot Encoding', onehot),
+    ('Algoritmo', model)
+])
+
+model_pipeline.fit(X_train, y_train)
+
+# %%
+
+# ASSESS - TREINOS
+
+y_pred_train = model_pipeline.predict(X_train)
+y_proba_train = model_pipeline.predict_proba(X_train)
 
 acc_train = metrics.accuracy_score(y_train, y_pred_train)
 auc_train = metrics.roc_auc_score(y_train, y_proba_train[:,1])
@@ -136,34 +135,16 @@ print('AUC Treino:', auc_train)
 
 # %%
 
-if len(to_remove) > 0:
-    X_test_transform = drop_features.transform(X_test)
-else:
-    X_test_transform = X_test.copy()
+# ASSESS - TESTE
 
-X_test_transform = imput_0.transform(X_test_transform)
-X_test_transform = imput_9999.transform(X_test_transform)
-X_test_transform = onehot.transform(X_test_transform)
-
-y_pred_test = model.predict(X_test_transform)
-y_proba_test = model.predict_proba(X_test_transform)
+y_pred_test = model_pipeline.predict(X_test)
+y_proba_test = model_pipeline.predict_proba(X_test)
 
 acc_test = metrics.accuracy_score(y_test, y_pred_test)
 auc_test = metrics.roc_auc_score(y_test, y_proba_test[:,1])
 
 print('Acurácia Teste:', acc_test)
 print('AUC Teste:', auc_test)
-
-# %%
-
-# y_pred_fodace = pd.Series([0]*y_test.shape[0])
-# y_proba_fodace = pd.Series([y_train.mean()]*y_test.shape[0])
-
-# acc_fodace = metrics.accuracy_score(y_test, y_pred_fodace)
-# auc_fodace = metrics.roc_auc_score(y_test, y_proba_fodace)
-
-# print('Acurácia fodace:', acc_fodace)
-# print('AUC fodace:', auc_fodace)
 
 # %%
 
