@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/f13d20e58c9b4b88a44992a12d70aaa1/artifacts
+end_time: 1763390091546
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: f13d20e58c9b4b88a44992a12d70aaa1
+run_name: agreeable-dog-884
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763390082994
+status: 3
+tags: []
+user_id: Luan

@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/94259be7a3fb4dc5b74862e505b69c30/artifacts
+end_time: 1763389604296
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: 94259be7a3fb4dc5b74862e505b69c30
+run_name: luxuriant-mole-239
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763389567711
+status: 3
+tags: []
+user_id: Luan

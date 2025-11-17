@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/5495db30f1414c7b8d4489e2c0b22ed6/artifacts
+end_time: 1763390449548
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: 5495db30f1414c7b8d4489e2c0b22ed6
+run_name: aged-squirrel-548
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763390443927
+status: 3
+tags: []
+user_id: Luan

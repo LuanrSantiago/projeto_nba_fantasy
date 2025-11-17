@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/f02173e370574b76b8212afa53213cb0/artifacts
+end_time: 1763388816992
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: f02173e370574b76b8212afa53213cb0
+run_name: efficient-ram-356
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763388808127
+status: 3
+tags: []
+user_id: Luan

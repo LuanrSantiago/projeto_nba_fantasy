@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/65b3f16ddbf3422fa275e88f04234c3f/artifacts
+end_time: 1763390411191
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: 65b3f16ddbf3422fa275e88f04234c3f
+run_name: worried-elk-713
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763390402843
+status: 3
+tags: []
+user_id: Luan

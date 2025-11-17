@@ -2,8 +2,22 @@
 
 import pandas as pd
 import sqlalchemy
-from sklearn import model_selection, tree, metrics, pipeline
-from feature_engine import selection, imputation, encoding
+
+from sklearn import model_selection
+from sklearn import ensemble
+from sklearn import metrics
+from sklearn import pipeline
+from sklearn import tree
+
+from feature_engine import selection
+from feature_engine import imputation
+from feature_engine import encoding
+
+import mlflow
+import matplotlib.pyplot as plt
+
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
+mlflow.set_experiment(experiment_id="275746972783010523")
 
 con = sqlalchemy.create_engine("sqlite:///../data/analytics/nba_analytics.db")
 
@@ -11,17 +25,12 @@ con = sqlalchemy.create_engine("sqlite:///../data/analytics/nba_analytics.db")
 
 # SAMPLE - IMPORT DE DADOS
 
-df = pd.read_sql("SELECT * FROM abt_FsGrow", con)
-df.head()
-
-# %%
+df = pd.read_sql("SELECT * FROM abt_FsGrow WHERE Temporada <> '2024'", con)
 
 # SAMPLE - OOT
 
 df_oot = df[df['Temporada']==df['Temporada'].max()].reset_index(drop=True)
 df_oot
-
-# %%
 
 # SAMPLE - TESTE E TREINO
 
@@ -54,9 +63,6 @@ s_nas = X_train.isna().mean()
 s_nas = s_nas[s_nas>0]
 s_nas
 
-
-# %%
-
 # EXPLORE - BIVARIADA
 
 cat_features = X_train.dtypes[X_train.dtypes == 'object'].index.tolist()
@@ -74,18 +80,6 @@ bivariada_cat = df_train.groupby('groupPerformance')[target].mean()
 
 # %%
 
-# MODIFY - DROP
-
-# to_remove = bivariada[bivariada['ratio']==1].index.tolist()
-# if len(to_remove) > 0:
-#     drop_feat = selection.DropFeatures(to_remove)
-#     X_train_transform = drop_feat.fit_transform(X_train)
-# else:
-#     X_train_transform = X_train.copy()
-
-
-# %%
-
 # MODIFY - FILL MISSING
 
 fill_0 = ['ftPercent', 'twoPercent', 'threePercent', 'fieldPercent'] 
@@ -93,8 +87,6 @@ imput_0 = imputation.ArbitraryNumberImputer(arbitrary_number=0,variables=fill_0)
 
 fill_9999 = ['careerPeak','deltaCareerPeak']
 imput_9999 = imputation.ArbitraryNumberImputer(arbitrary_number=-9999, variables=fill_9999)
-
-# %%
 
 # MODIFY - ONEHOT
 
@@ -106,51 +98,86 @@ onehot = encoding.OneHotEncoder(variables=['groupPerformance'])
 
 model = tree.DecisionTreeClassifier(random_state=42, min_samples_leaf=50)
 
+# model = ensemble.RandomForestClassifier(
+#     random_state=42,
+#     n_estimators=400,
+#     min_samples_leaf=50
+# )
+
 
 # %%
 
 # CRIANDO PIPELINE
 
-model_pipeline = pipeline.Pipeline(steps=[
-    ('Imputação de Zeros', imput_0),
-    ('Imputação de -9999', imput_9999),
-    ('OneHot Encoding', onehot),
-    ('Algoritmo', model)
-])
+with mlflow.start_run() as r:
 
-model_pipeline.fit(X_train, y_train)
+    mlflow.sklearn.autolog()
+
+    model_pipeline = pipeline.Pipeline(steps=[
+        ('Imputacaoo de Zeros', imput_0),
+        ('Imputacao de -9999', imput_9999),
+        ('OneHot Encoding', onehot),
+        ('Algoritmo', model)
+    ])
+
+    model_pipeline.fit(X_train, y_train)
+
+    # ASSESS - TREINOS
+
+    y_pred_train = model_pipeline.predict(X_train)
+    y_proba_train = model_pipeline.predict_proba(X_train)
+
+    acc_train = metrics.accuracy_score(y_train, y_pred_train)
+    auc_train = metrics.roc_auc_score(y_train, y_proba_train[:,1])
+
+    print('Acuracia Treino:', acc_train)
+    print('AUC Treino:', auc_train)
+
+    # ASSESS - TESTE
+
+    y_pred_test = model_pipeline.predict(X_test)
+    y_proba_test = model_pipeline.predict_proba(X_test)
+
+    acc_test = metrics.accuracy_score(y_test, y_pred_test)
+    auc_test = metrics.roc_auc_score(y_test, y_proba_test[:,1])
+
+    print('Acuracia Teste:', acc_test)
+    print('AUC Teste:', auc_test)
+
+    mlflow.log_metrics({
+        "acc_train":acc_train,
+        "auc_train":auc_train,
+        "acc_test":acc_test,
+        "auc_test":auc_test
+    })
+
+    roc_train = metrics.roc_curve(y_train, y_proba_train[:,1])
+    roc_test = metrics.roc_curve(y_test, y_proba_test[:,1])
+
+    plt.figure(dpi=150)
+
+    plt.plot(roc_train[0], roc_train[1])
+    plt.plot(roc_test[0], roc_test[1])
+    plt.legend([f"Treino: {auc_train:.4f}", 
+                f"Teste: {auc_test:.4f}"])
+    plt.grid(True)
+    plt.plot([0,1], [0,1], "--", color='black')
+    plt.title("Curva ROC")
+    plt.savefig("curva_ROC.png")
+
+    mlflow.log_artifact('curva_ROC.png')
+
 
 # %%
 
-# ASSESS - TREINOS
+features_names = (model_pipeline[:-1].transform(X_train.head(1))
+                                    .columns
+                                    .tolist())
 
-y_pred_train = model_pipeline.predict(X_train)
-y_proba_train = model_pipeline.predict_proba(X_train)
+feature_importance = pd.Series(model_pipeline[-1].feature_importances_,
+                                index=features_names)
 
-acc_train = metrics.accuracy_score(y_train, y_pred_train)
-auc_train = metrics.roc_auc_score(y_train, y_proba_train[:,1])
-
-print('Acurácia Treino:', acc_train)
-print('AUC Treino:', auc_train)
-
-# %%
-
-# ASSESS - TESTE
-
-y_pred_test = model_pipeline.predict(X_test)
-y_proba_test = model_pipeline.predict_proba(X_test)
-
-acc_test = metrics.accuracy_score(y_test, y_pred_test)
-auc_test = metrics.roc_auc_score(y_test, y_proba_test[:,1])
-
-print('Acurácia Teste:', acc_test)
-print('AUC Teste:', auc_test)
-
-# %%
-
-features_names = X_train_transform.columns.tolist()
-
-feature_importance = pd.Series(model.feature_importances_, index=features_names)
 feature_importance.sort_values(ascending=False)
+
 
 # %%

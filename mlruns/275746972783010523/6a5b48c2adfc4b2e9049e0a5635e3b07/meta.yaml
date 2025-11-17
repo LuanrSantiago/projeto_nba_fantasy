@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/6a5b48c2adfc4b2e9049e0a5635e3b07/artifacts
+end_time: 1763389148927
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: 6a5b48c2adfc4b2e9049e0a5635e3b07
+run_name: capable-kite-946
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763389143323
+status: 3
+tags: []
+user_id: Luan

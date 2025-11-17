@@ -1,0 +1,15 @@
+creation_timestamp: 1763390958899
+current_stage: None
+deployment_job_state: null
+description: ''
+last_updated_timestamp: 1763390958899
+model_id: m-4ae3f0800cb9479ca2966c126406414f
+name: model_fsGrow
+run_id: 65b3f16ddbf3422fa275e88f04234c3f
+run_link: ''
+source: models:/m-4ae3f0800cb9479ca2966c126406414f
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/275746972783010523/models/m-4ae3f0800cb9479ca2966c126406414f/artifacts
+user_id: null
+version: 1

@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/eb9e89a14b3e420ea9e573c16c8908ba/artifacts
+end_time: 1763389111411
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: eb9e89a14b3e420ea9e573c16c8908ba
+run_name: fearless-lamb-226
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763389102758
+status: 3
+tags: []
+user_id: Luan

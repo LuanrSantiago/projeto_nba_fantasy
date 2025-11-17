@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/fcd8aea920db45a493adcd5dcdf51e7b/artifacts
+end_time: 1763390902240
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: fcd8aea920db45a493adcd5dcdf51e7b
+run_name: melodic-foal-484
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763390896801
+status: 3
+tags: []
+user_id: Luan

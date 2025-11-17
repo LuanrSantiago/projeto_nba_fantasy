@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/4ed320bc960c4f1f9784531b36530626/artifacts
+end_time: 1763387292484
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: 4ed320bc960c4f1f9784531b36530626
+run_name: enchanting-colt-178
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763387277319
+status: 3
+tags: []
+user_id: Luan

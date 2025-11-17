@@ -1,0 +1,4 @@
+[('Imputação de Zeros', ArbitraryNumberImputer(arbitrary_number=0,
+                       variables=['ftPercent', 'twoPercent', 'threePercent',
+                                  'fieldPercent'])), ('Imputação de -9999', ArbitraryNumberImputer(arbitrary_number=-9999,
+                       variables=['careerPeak', 'deltaCareerPeak'])), ('OneHot Encoding', OneHotEncoder(variables=['groupPerformance'])), ('Algoritmo', DecisionTreeClassifier(min_samples_leaf=50, random_state=42))]

@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/39136b6355d246999ca9e2af51995aae/artifacts
+end_time: 1763388918444
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: 39136b6355d246999ca9e2af51995aae
+run_name: masked-sow-562
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763388909634
+status: 3
+tags: []
+user_id: Luan
