@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/b7eb115bc2cd49d598a545902c067007/artifacts
+end_time: 1763487058422
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: b7eb115bc2cd49d598a545902c067007
+run_name: amusing-turtle-115
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763487046395
+status: 3
+tags: []
+user_id: lrsantiago

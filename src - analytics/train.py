@@ -96,13 +96,13 @@ onehot = encoding.OneHotEncoder(variables=['groupPerformance'])
 
 # MODEL
 
-model = tree.DecisionTreeClassifier(random_state=42, min_samples_leaf=50)
+# model = tree.DecisionTreeClassifier(random_state=42, min_samples_leaf=50)
 
-# model = ensemble.RandomForestClassifier(
-#     random_state=42,
-#     n_estimators=400,
-#     min_samples_leaf=50
-# )
+model = ensemble.RandomForestClassifier(
+    random_state=42,
+    n_estimators=400,
+    min_samples_leaf=50
+)
 
 
 # %%
@@ -163,8 +163,7 @@ with mlflow.start_run() as r:
     plt.grid(True)
     plt.plot([0,1], [0,1], "--", color='black')
     plt.title("Curva ROC")
-    plt.savefig("curva_ROC.png")
-
+   
     mlflow.log_artifact('curva_ROC.png')
 
 

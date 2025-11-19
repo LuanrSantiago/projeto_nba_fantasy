@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/edace3d0bc0144819245af018d9fdb98/artifacts
+end_time: 1763484553798
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: edace3d0bc0144819245af018d9fdb98
+run_name: incongruous-carp-428
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763484551203
+status: 4
+tags: []
+user_id: lrsantiago

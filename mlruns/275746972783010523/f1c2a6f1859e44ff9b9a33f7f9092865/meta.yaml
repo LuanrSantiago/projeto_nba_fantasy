@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/f1c2a6f1859e44ff9b9a33f7f9092865/artifacts
+end_time: 1763484678150
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: f1c2a6f1859e44ff9b9a33f7f9092865
+run_name: magnificent-fox-797
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763484667915
+status: 3
+tags: []
+user_id: lrsantiago

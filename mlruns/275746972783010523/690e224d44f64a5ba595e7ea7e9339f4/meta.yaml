@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/690e224d44f64a5ba595e7ea7e9339f4/artifacts
+end_time: 1763484600482
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: 690e224d44f64a5ba595e7ea7e9339f4
+run_name: spiffy-sheep-829
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763484588450
+status: 3
+tags: []
+user_id: lrsantiago

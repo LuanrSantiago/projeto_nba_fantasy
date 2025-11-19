@@ -19,9 +19,47 @@ WITH dataPlayersFantasy AS (
         ftPercent,
         twoPercent,
         threePercent,
-        fieldPercent
-
+        fieldPercent,
+        
+        -- Coluna que identifica se existe a linha 'TOT' para este jogador/temporada
+        MAX(CASE WHEN team = 'TOT' THEN 1 ELSE 0 END) 
+            OVER (PARTITION BY playerId, Temporada) AS HasTotLine
+            
     FROM player_totals_seasons
+), 
+-- CTE para selecionar APENAS a linha consolidada (TOT) ou a única linha
+dataPlayersFantasyClean AS (
+    SELECT
+        playerId,
+        name,
+        position,
+        Temporada,
+        team,
+        age,
+        games,
+        gamesStarted,
+        minutesPg,
+        points,
+        assists,
+        rebounds,
+        steals,
+        blocks,
+        turnovers,
+        personalFouls,
+        ftPercent,
+        twoPercent,
+        threePercent,
+        fieldPercent
+        
+    FROM dataPlayersFantasy
+    
+    -- FILTRO PRINCIPAL: Seleciona APENAS a linha consolidada (TOT) se ela existir,
+    -- OU a única linha se a linha TOT não existir (jogadores que não trocaram de time).
+    WHERE 
+        (HasTotLine = 1 AND team = 'TOT') -- Se tem linha TOT, pega só a TOT
+        OR 
+        (HasTotLine = 0)                     -- Se não tem linha TOT, pega a única linha
+    
 ), 
 
 tableFantasyPoints AS (
@@ -29,9 +67,10 @@ tableFantasyPoints AS (
         t1.playerId,
         t1.Temporada,
         t1.PlayerName_Limpo,
-        
-        -- Colunas de Estatísticas da Tabela Principal (t1)
-        -- As subconsultas (SELECT Pontos...) garantem o peso correto de cada regra (r)
+        t1.team,
+        -- Coluna para identificar se existe a linha 'TOT' (necessário para o filtro)
+        MAX(CASE WHEN t1.team = 'TOT' THEN 1 ELSE 0 END) 
+            OVER (PARTITION BY t1.playerId, t1.Temporada) AS HasTotLineForFantasy,
         (
             IFNULL (t1.twoFg * (SELECT Pontos FROM regras_fantasy WHERE Estatistica = 'twoFg') ,0)+
             IFNULL(t1.twoAttempts * (SELECT Pontos FROM regras_fantasy WHERE Estatistica = 'twoAttemps') ,0)+
@@ -44,14 +83,10 @@ tableFantasyPoints AS (
             IFNULL(t1.blocks * (SELECT Pontos FROM regras_fantasy WHERE Estatistica = 'blocks') ,0)+
             IFNULL(t1.turnovers * (SELECT Pontos FROM regras_fantasy WHERE Estatistica = 'turnovers') ,0)+
             IFNULL(t1.points * (SELECT Pontos FROM regras_fantasy WHERE Estatistica = 'points'), 0)
-        ) AS fantasyScore,
-        t1.team
+        ) AS fantasyScore
         
     FROM 
         player_totals_seasons t1
-
-    ORDER BY
-        t1.Temporada ASC, t1.PlayerName_Limpo ASC
 )
 
 SELECT
@@ -76,11 +111,18 @@ SELECT
     d.threePercent,
     d.fieldPercent,
     t2.fantasyScore
-FROM dataPlayersFantasy AS d
-LEFT JOIN tableFantasyPoints AS t2
+FROM dataPlayersFantasyClean AS d 
+LEFT JOIN (
+    -- Subquery para aplicar o filtro de consolidação na tabela de Fantasy Points
+    SELECT 
+        playerId,
+        Temporada,
+        fantasyScore 
+    FROM tableFantasyPoints
+    WHERE 
+        (HasTotLineForFantasy = 1 AND team = 'TOT') -- Filtra pela linha TOT
+        OR 
+        (HasTotLineForFantasy = 0)                               -- OU pela única linha
+) AS t2
 ON d.playerId = t2.playerId AND d.Temporada = t2.Temporada
-GROUP BY
-    d.playerId,
-    d.Temporada,
-    d.name
 ORDER BY d.name ASC, d.Temporada ASC
