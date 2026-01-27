@@ -1,0 +1,46 @@
+artifact_path: file:C:/Users/Luan/Documents/Estudos Data Science/Projeto NBA Fantasy/projeto_nba_fantasy/mlruns/0/models/m-2be1f619a6004f4baaa1e3d3c4a98543/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.13.7
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+is_signature_from_type_hint: false
+mlflow_version: 3.8.1
+model_id: m-2be1f619a6004f4baaa1e3d3c4a98543
+model_size_bytes: 13244338
+model_uuid: m-2be1f619a6004f4baaa1e3d3c4a98543
+prompts: null
+run_id: 7e16a36638c642589794485ce8f8353e
+signature:
+  inputs: '[{"type": "long", "name": "age", "required": true}, {"type": "long", "name":
+    "games", "required": true}, {"type": "long", "name": "gamesStarted", "required":
+    true}, {"type": "double", "name": "minutesPg", "required": true}, {"type": "long",
+    "name": "points", "required": true}, {"type": "long", "name": "assists", "required":
+    true}, {"type": "long", "name": "rebounds", "required": true}, {"type": "long",
+    "name": "steals", "required": true}, {"type": "long", "name": "blocks", "required":
+    true}, {"type": "long", "name": "turnovers", "required": true}, {"type": "long",
+    "name": "personalFouls", "required": true}, {"type": "double", "name": "ftPercent",
+    "required": false}, {"type": "double", "name": "twoPercent", "required": true},
+    {"type": "double", "name": "threePercent", "required": true}, {"type": "double",
+    "name": "fieldPercent", "required": true}, {"type": "double", "name": "fantasyScore",
+    "required": true}, {"type": "double", "name": "fantasyPointsGame", "required":
+    true}, {"type": "double", "name": "fantasyPointsMinute", "required": true}, {"type":
+    "double", "name": "fantasyPointsStarted", "required": true}, {"type": "double",
+    "name": "percentPointFantasyTeam", "required": true}, {"type": "double", "name":
+    "fantasyPointsPer36", "required": true}, {"type": "double", "name": "pointsAssistRatio",
+    "required": true}, {"type": "string", "name": "groupPerformance", "required":
+    true}, {"type": "double", "name": "careerPeak", "required": false}, {"type": "double",
+    "name": "deltaCareerPeak", "required": false}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-01-26 23:05:58.761825'

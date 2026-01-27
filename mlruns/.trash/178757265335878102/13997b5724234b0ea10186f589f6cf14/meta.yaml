@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/178757265335878102/13997b5724234b0ea10186f589f6cf14/artifacts
+deleted_time: 1769470064776
+end_time: 1769470027288
+entry_point_name: ''
+experiment_id: '178757265335878102'
+lifecycle_stage: deleted
+run_id: 13997b5724234b0ea10186f589f6cf14
+run_name: agreeable-snail-944
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1769469986290
+status: 3
+tags: []
+user_id: Luan

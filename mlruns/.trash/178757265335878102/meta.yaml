@@ -1,0 +1,7 @@
+artifact_location: mlflow-artifacts:/178757265335878102
+creation_time: 1769469983021
+experiment_id: '178757265335878102'
+last_update_time: 1769470064776
+lifecycle_stage: deleted
+name: nexp_predict_FsGrow
+tags: {}

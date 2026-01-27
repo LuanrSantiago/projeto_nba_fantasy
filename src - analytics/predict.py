@@ -8,7 +8,9 @@ con = sqlalchemy.create_engine("sqlite:///../data/analytics/nba_analytics.db")
 
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
-model = mlflow.sklearn.load_model("models:///model_fsGrow/1")
+versions = mlflow.search_model_versions(filter_string="name='exp_predict_FsGrow'")
+last_version = max(int(i.version) for i in versions)
+model = mlflow.sklearn.load_model(f"models:///exp_predict_FsGrow/{last_version}")
 
 # %%
 model

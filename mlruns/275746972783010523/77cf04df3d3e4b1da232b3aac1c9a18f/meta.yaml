@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/275746972783010523/77cf04df3d3e4b1da232b3aac1c9a18f/artifacts
+end_time: 1769470100557
+entry_point_name: ''
+experiment_id: '275746972783010523'
+lifecycle_stage: active
+run_id: 77cf04df3d3e4b1da232b3aac1c9a18f
+run_name: invincible-lynx-110
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1769470057403
+status: 3
+tags: []
+user_id: Luan

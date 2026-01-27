@@ -1,0 +1,25 @@
+digest: 18b7fd0b
+name: dataset
+profile: '{"num_rows": 3358, "num_elements": 83950}'
+schema: '{"mlflow_colspec": [{"type": "long", "name": "age", "required": true}, {"type":
+  "long", "name": "games", "required": true}, {"type": "long", "name": "gamesStarted",
+  "required": true}, {"type": "double", "name": "minutesPg", "required": true}, {"type":
+  "long", "name": "points", "required": true}, {"type": "long", "name": "assists",
+  "required": true}, {"type": "long", "name": "rebounds", "required": true}, {"type":
+  "long", "name": "steals", "required": true}, {"type": "long", "name": "blocks",
+  "required": true}, {"type": "long", "name": "turnovers", "required": true}, {"type":
+  "long", "name": "personalFouls", "required": true}, {"type": "double", "name": "ftPercent",
+  "required": false}, {"type": "double", "name": "twoPercent", "required": false},
+  {"type": "double", "name": "threePercent", "required": false}, {"type": "double",
+  "name": "fieldPercent", "required": false}, {"type": "double", "name": "fantasyScore",
+  "required": true}, {"type": "double", "name": "fantasyPointsGame", "required": true},
+  {"type": "double", "name": "fantasyPointsMinute", "required": true}, {"type": "double",
+  "name": "fantasyPointsStarted", "required": true}, {"type": "double", "name": "percentPointFantasyTeam",
+  "required": true}, {"type": "double", "name": "fantasyPointsPer36", "required":
+  true}, {"type": "double", "name": "pointsAssistRatio", "required": true}, {"type":
+  "string", "name": "groupPerformance", "required": true}, {"type": "double", "name":
+  "careerPeak", "required": false}, {"type": "double", "name": "deltaCareerPeak",
+  "required": false}]}'
+source: '{"tags": {"mlflow.user": "Luan", "mlflow.source.name": "c:\\Users\\Luan\\anaconda3\\envs\\loyalty-predict\\Lib\\site-packages\\ipykernel_launcher.py",
+  "mlflow.source.type": "LOCAL"}}'
+source_type: code

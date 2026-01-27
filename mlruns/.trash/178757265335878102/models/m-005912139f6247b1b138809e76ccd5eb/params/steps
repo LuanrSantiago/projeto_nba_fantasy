@@ -1,0 +1,11 @@
+[('Imputacaoo de Zeros', ArbitraryNumberImputer(arbitrary_number=0,
+                       variables=['ftPercent', 'twoPercent', 'threePercent',
+                                  'fieldPercent'])), ('Imputacao de -9999', ArbitraryNumberImputer(arbitrary_number=-9999,
+                       variables=['careerPeak', 'deltaCareerPeak'])), ('OneHot Encoding', OneHotEncoder(variables=['groupPerformance'])), ('Algoritmo', GridSearchCV(cv=3,
+             estimator=RandomForestClassifier(min_samples_leaf=50,
+                                              n_estimators=400, n_jobs=2,
+                                              random_state=42),
+             n_jobs=5,
+             param_grid={'min_samples_leaf': [10, 20, 30, 50, 75, 100],
+                         'n_estimators': [100, 200, 400, 500, 1000]},
+             scoring='roc_auc', verbose=3))]

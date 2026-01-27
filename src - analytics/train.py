@@ -17,7 +17,10 @@ import mlflow
 import matplotlib.pyplot as plt
 
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
-mlflow.set_experiment(experiment_id="275746972783010523")
+
+mlflow.set_experiment("exp_predict_FsGrow")
+
+model = mlflow.sklearn.load_model("models:///model_fsGrow/1")
 
 con = sqlalchemy.create_engine("sqlite:///../data/analytics/nba_analytics.db")
 
@@ -94,15 +97,29 @@ onehot = encoding.OneHotEncoder(variables=['groupPerformance'])
 
 # %%
 
-# MODEL
+# MODEL - ALGORITMO
 
 # model = tree.DecisionTreeClassifier(random_state=42, min_samples_leaf=50)
 
 model = ensemble.RandomForestClassifier(
     random_state=42,
     n_estimators=400,
-    min_samples_leaf=50
+    min_samples_leaf=50,
+    n_jobs=2,
 )
+
+params = {
+    "n_estimators": [100,200,400,500,1000],
+    "min_samples_leaf": [10,20,30,50,75,100],
+}
+
+grid = model_selection.GridSearchCV(model,
+                                    param_grid=params,
+                                    cv=3,
+                                    scoring='roc_auc',
+                                    refit=True,
+                                    verbose=3,
+                                    n_jobs=5)
 
 
 # %%
@@ -112,12 +129,13 @@ model = ensemble.RandomForestClassifier(
 with mlflow.start_run() as r:
 
     mlflow.sklearn.autolog()
-
+    
+  
     model_pipeline = pipeline.Pipeline(steps=[
         ('Imputacaoo de Zeros', imput_0),
         ('Imputacao de -9999', imput_9999),
         ('OneHot Encoding', onehot),
-        ('Algoritmo', model)
+        ('Algoritmo', grid),
     ])
 
     model_pipeline.fit(X_train, y_train)
@@ -154,8 +172,6 @@ with mlflow.start_run() as r:
     roc_train = metrics.roc_curve(y_train, y_proba_train[:,1])
     roc_test = metrics.roc_curve(y_test, y_proba_test[:,1])
 
-    plt.figure(dpi=150)
-
     plt.plot(roc_train[0], roc_train[1])
     plt.plot(roc_test[0], roc_test[1])
     plt.legend([f"Treino: {auc_train:.4f}", 
@@ -163,20 +179,21 @@ with mlflow.start_run() as r:
     plt.grid(True)
     plt.plot([0,1], [0,1], "--", color='black')
     plt.title("Curva ROC")
+    plt.savefig('curva_ROC.png')
    
     mlflow.log_artifact('curva_ROC.png')
 
 
 # %%
 
-features_names = (model_pipeline[:-1].transform(X_train.head(1))
-                                    .columns
-                                    .tolist())
+#features_names = (grid[:-1].transform(X_train.head(1))
+#                                    .columns
+#                                    .tolist())
 
-feature_importance = pd.Series(model_pipeline[-1].feature_importances_,
-                                index=features_names)
+#feature_importance = pd.Series(grid[-1].feature_importances_,
+#                                index=features_names)
 
-feature_importance.sort_values(ascending=False)
+#feature_importance.sort_values(ascending=False)
 
 
 # %%
